@@ -1,0 +1,15 @@
+<!doctype html><html><body>
+<p><a href="/">← Back</a> | <a href="/logout">Logout</a></p>
+<h2>Name list</h2>
+
+<form method="post" action="/people/add">
+  <input name="name" placeholder="Add new name" required>
+  <button type="submit">Add</button>
+</form>
+
+<ul>
+{% for p in people %}
+  <li>{{ p.name }}</li>
+{% endfor %}
+</ul>
+</body></html>
