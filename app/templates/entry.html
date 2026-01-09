@@ -1,0 +1,39 @@
+<!doctype html><html><body>
+<p><a href="/">← Back</a> | <a href="/logout">Logout</a></p>
+<h2>Enter predictions (Gameweek {{ gw }})</h2>
+{% if msg %}<p><b>{{ msg }}</b></p>{% endif %}
+
+<form method="get" action="/entry">
+  <input type="hidden" name="gw" value="{{ gw }}">
+  <label>Person</label>
+  <input name="person" list="people" value="{{ person or '' }}" required>
+  <datalist id="people">
+    {% for p in people %}<option value="{{ p }}"></option>{% endfor %}
+  </datalist>
+  <button type="submit">Load</button>
+</form>
+
+{% if person %}
+<hr/>
+<form method="post" action="/entry/save">
+  <input type="hidden" name="gw" value="{{ gw }}">
+  <input type="hidden" name="person" value="{{ person }}">
+
+  <table border="1" cellpadding="6">
+    <tr><th>Fixture</th><th>Pred Home</th><th>Pred Away</th></tr>
+    {% for f in fixtures %}
+      <tr>
+        <td>{{ f.home }} vs {{ f.away }}</td>
+        <td><input name="ph_{{ f.id }}" type="number" min="0" style="width:70px"
+          value="{{ existing.get(f.id).pred_home if existing.get(f.id) else '' }}"></td>
+        <td><input name="pa_{{ f.id }}" type="number" min="0" style="width:70px"
+          value="{{ existing.get(f.id).pred_away if existing.get(f.id) else '' }}"></td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <button type="submit">Save predictions</button>
+</form>
+{% endif %}
+
+</body></html>
