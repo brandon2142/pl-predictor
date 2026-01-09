@@ -26,6 +26,23 @@ jobs:
 
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            - name: Debug - show files
+        run: |
+          echo "=== ROOT DIRECTORY ==="
+          pwd
+          ls -la
+          echo ""
+          echo "=== APP DIRECTORY ==="
+          ls -la app || echo "app folder NOT FOUND"
+          echo ""
+          echo "=== FILE TREE (2 levels deep) ==="
+          find . -maxdepth 2 -type f -print
+          echo ""
+          echo "=== DOCKERFILE CONTENT ==="
+          cat Dockerfile || echo "Dockerfile NOT FOUND"
+          echo ""
+          echo "=== DOCKERIGNORE ==="
+          (ls -la .dockerignore && cat .dockerignore) || echo "No .dockerignore file"
 
       - name: Build image (no buildx)
         run: docker build -f Dockerfile -t ghcr.io/${{ github.repository }}:latest .
