@@ -1,0 +1,19 @@
+<!doctype html><html><body>
+<p><a href="/">← Back</a> | <a href="/logout">Logout</a></p>
+<h2>Fixtures (Gameweek {{ gw }})</h2>
+
+{% if msg %}<p><b>{{ msg }}</b></p>{% endif %}
+
+<form method="post" action="/fixtures/sync">
+  <input name="gw" type="number" min="1" max="38" value="{{ gw }}" required>
+  <button type="submit">Sync fixtures for this GW</button>
+</form>
+
+<table border="1" cellpadding="6">
+<tr><th>Kickoff (UTC)</th><th>Home</th><th>Away</th></tr>
+{% for f in fixtures %}
+<tr><td>{{ f.kickoff_utc }}</td><td>{{ f.home }}</td><td>{{ f.away }}</td></tr>
+{% endfor %}
+</table>
+
+</body></html>
